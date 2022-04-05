@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set()
@@ -12,11 +13,12 @@ class Board:
     VALUE = 2
 
     def __init__(self, log_dir: str) -> None:
-        self.log_files = [path for path in Path(log_dir).iterdir() if path.is_file()]
+        self.log_files = [path for path in Path(log_dir).glob("**/*") if path.is_file()]
         self.scalars = self.get_scalars()
+        self._logger = get_logger()
 
     def get_scalars(self) -> Dict:
-        data = {log_file.stem: {} for log_file in self.log_files}
+        data = {log_file.parent.name: {} for log_file in self.log_files}
 
         for log_file in self.log_files:
             event = EventAccumulator(str(log_file))
@@ -26,10 +28,10 @@ class Board:
 
             for tag in tags:
                 scalars = event.Scalars(tag)
-                data[log_file.stem][tag] = []
+                data[log_file.parent.name][tag] = []
 
                 for scalar in scalars:
-                    data[log_file.stem][tag].append(scalar[Board.VALUE])
+                    data[log_file.parent.name][tag].append(scalar[Board.VALUE])
 
         return data
 
@@ -44,3 +46,18 @@ class Board:
                 plt.savefig(f"{output_dir}/{file}_{tag}.{extention}")
                 plt.close()
 
+                self._logger.info(f"{file}/{tag} saved.")
+
+
+def get_logger() -> logging.Logger:
+    fmt = logging.Formatter("[%(asctime)s] :%(name)s: [%(levelname)s] %(message)s", "%Y-%m-%d %H:%M:%S")
+
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(fmt)
+
+    logger.addHandler(handler)
+
+    return logger
