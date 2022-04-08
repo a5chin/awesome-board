@@ -6,7 +6,7 @@ pip install -r requirements.txt
 ```
 or
 ```bash
-pip install git+https://github.com/a5chin/board
+pip install git+https://github.com/a5chin/awesome-board
 ```
 
 ## Example
