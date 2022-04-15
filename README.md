@@ -15,7 +15,7 @@ from board import Board
 
 
 board = Board("logs")
-board.savefig("outputs")
+board.savefig("outputs", extension="png")
 ```
 
-for more information, please visit [here](examples/demo_savefig.ipynb)
+for more information, please visit [examples/demo_savefig.ipynb](examples/demo_savefig.ipynb)
