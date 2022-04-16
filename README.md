@@ -18,4 +18,4 @@ board = Board("logs")
 board.savefig("outputs", extension="png")
 ```
 
-for more information, please visit [examples/demo_savefig.ipynb](examples/demo_savefig.ipynb)
+For more information, please visit [examples/demo_savefig.ipynb](examples/demo_savefig.ipynb)
