@@ -10,7 +10,8 @@ ENV PATH $PATH:/root/anaconda3/bin
 
 RUN pip install --upgrade pip
 RUN conda activate base && \
-    conda create -n board python=3.9
+    conda create -n board python=3.9 && \
+    conda activate board
 RUN pip install git+https://github.com/a5chin/awesome-board
 
 RUN mkdir /workspace
