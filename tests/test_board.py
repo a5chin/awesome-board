@@ -1,5 +1,10 @@
+import sys
+import pathlib
 import numpy as np
 from torch.utils.tensorboard import SummaryWriter
+
+current_dir = pathlib.Path(__file__).resolve().parent
+sys.path.append( str(current_dir) + '/../' )
 
 from board import Board
 
