@@ -3,6 +3,9 @@ line-length = 88
 target-version = ['py39']
 include = '\.py$'
 
+[tool.isort]
+profile = "black"
+
 [tool.pydocstyle]
 ignore = "D100, D2, D3, D4"
 match-dir = '^(?!.*models|backbone).*$'

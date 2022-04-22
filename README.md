@@ -1,6 +1,16 @@
-# Usage
+<div align="center">
 
-## Installation
+<h1>Board</h1>
+
+[![Pytest](https://github.com/a5chin/awesome-board/actions/workflows/pytest.yml/badge.svg)](https://github.com/a5chin/awesome-board/actions/workflows/pytest.yml) [![Linting](https://github.com/a5chin/awesome-board/actions/workflows/linting.yml/badge.svg)](https://github.com/a5chin/awesome-board/actions/workflows/linting.yml) [![License](https://img.shields.io/pypi/l/ansicolortags.svg)](https://img.shields.io/pypi/l/ansicolortags.svg)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](examples/demo_savefig.ipynb)
+
+</div>
+
+## Usage
+
+### Installation
 ```bash
 pip install -r requirements.txt
 ```
@@ -9,7 +19,7 @@ or
 pip install git+https://github.com/a5chin/awesome-board
 ```
 
-## Example
+### Example
 ```bash
 from board import Board
 
@@ -18,4 +28,4 @@ board = Board("logs")
 board.savefig("outputs", extension="png")
 ```
 
-For more information, please visit [examples/demo_savefig.ipynb](examples/demo_savefig.ipynb)
+<img alt="learning rate in training NN" src="assets/images/log.png" width="100%">
