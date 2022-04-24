@@ -26,15 +26,15 @@ jobs:
 
     - name: Test with black
       run: |
-        black --check ./board/
+        black --check ./board/ ./tests/
 
     - name: Test with isort
       run: |
-        isort --check ./board/
+        isort --check ./board/ ./tests/
 
     - name: Test with flake8
       run: |
-        flake8 ./board/
+        flake8 ./board/ ./tests/
 
     # - name: Test with pydocstyle
     #   run: |
