@@ -12,9 +12,7 @@ from board import Board
 
 
 @pytest.mark.parametrize(
-    ("log_dir", "output_dir", "freq"), [
-        ("./logs", "./outputs", 100)
-    ]
+    ("log_dir", "output_dir", "freq"), [("./logs", "./outputs", 100)]
 )
 def test_board(log_dir, output_dir, freq):
     random = np.random.randn(freq)
