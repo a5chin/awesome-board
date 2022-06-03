@@ -1,4 +1,3 @@
-import logging
 from pathlib import Path
 from typing import Dict
 
@@ -9,6 +8,8 @@ from tensorboard.backend.event_processing.event_accumulator import EventAccumula
 
 sns.set()
 
+from .utils import Logger
+
 
 class Board:
     WALL_TIME = 0
@@ -18,7 +19,7 @@ class Board:
     def __init__(self, log_dir: str) -> None:
         self.log_files = [path for path in Path(log_dir).glob("**/*") if path.is_file()]
         self.scalars = self.get_scalars()
-        self._logger = get_logger()
+        self._logger = Logger()
 
     def get_scalars(self) -> Dict:
         data = {log_file.parent.name: {} for log_file in self.log_files}
@@ -44,26 +45,13 @@ class Board:
         for file in self.scalars.keys():
             for tag in self.scalars[file].keys():
                 df = pd.DataFrame(self.scalars[file][tag])
-
                 df.plot(kind="line", title=tag, legend=False)
+
+                Path(f"{output_dir}/{file}_{tag}.{extension}").parent.mkdir(
+                    parents=True, exist_ok=True
+                )
                 plt.savefig(f"{output_dir}/{file}_{tag}.{extension}")
+
                 plt.close()
 
-                self._logger.info(f"{file}/{tag} saved.")
-
-
-def get_logger() -> logging.Logger:
-    fmt = logging.Formatter(
-        fmt="[%(asctime)s] :%(name)s: [%(levelname)s] %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
-
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-
-    handler = logging.StreamHandler()
-    handler.setFormatter(fmt)
-
-    logger.addHandler(handler)
-
-    return logger
+                self._logger.log(f"{file}/{tag} saved.")
