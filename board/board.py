@@ -40,8 +40,6 @@ class Board:
         return data
 
     def savefig(self, output_dir: str, extension: str = "png") -> None:
-        Path(output_dir).mkdir(parents=True, exist_ok=True)
-
         for file in self.scalars.keys():
             for tag in self.scalars[file].keys():
                 df = pd.DataFrame(self.scalars[file][tag])
