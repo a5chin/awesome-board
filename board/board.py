@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -39,7 +39,13 @@ class Board:
 
         return data
 
-    def savefig(self, output_dir: str, extension: str = "png") -> None:
+    def savefig(
+        self,
+        output_dir: str,
+        xlim: Optional[Tuple] = None,
+        ylim: Optional[Tuple] = None,
+        extension: str = "png",
+    ) -> None:
         for file in self.scalars.keys():
             for tag in self.scalars[file].keys():
                 df = pd.DataFrame(self.scalars[file][tag])
@@ -48,8 +54,12 @@ class Board:
                 Path(f"{output_dir}/{file}_{tag}.{extension}").parent.mkdir(
                     parents=True, exist_ok=True
                 )
-                plt.savefig(f"{output_dir}/{file}_{tag}.{extension}")
 
+                if xlim is not None:
+                    plt.xlim(*xlim)
+                if ylim is not None:
+                    plt.ylim(*ylim)
+                plt.savefig(f"{output_dir}/{file}_{tag}.{extension}")
                 plt.close()
 
                 self._logger.log(f"{file}/{tag} saved.")
