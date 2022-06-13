@@ -24,8 +24,23 @@ pip install git+https://github.com/a5chin/awesome-board
 from board import Board
 
 
-board = Board("logs")
-board.savefig("outputs", extension="png")
+board = Board(log_dir="logs")
+board.savefig(output_dir="outputs", extension="png")
 ```
 
 <img alt="learning rate in training NN" src="assets/images/log.png" width="100%">
+
+## The following extensions are supported
+- emf
+- eps
+- jpeg
+- jpg
+- pdf
+- png
+- ps
+- raw
+- rgba
+- svg
+- svgz
+- tif
+- tiff
