@@ -1,7 +1,7 @@
-from setuptools import setup, find_packages
-from codecs import open
+from setuptools import find_packages, setup
 
-exec(open("board/version").read())
+from board.version import __version__
+
 setup(
     name="board",
     version=__version__,
