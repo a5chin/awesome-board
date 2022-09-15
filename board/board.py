@@ -4,7 +4,9 @@ from typing import Dict, Optional, Tuple
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
+from tensorboard.backend.event_processing.event_accumulator import (
+    EventAccumulator,
+)
 
 sns.set()
 
@@ -17,7 +19,9 @@ class Board:
     VALUE = 2
 
     def __init__(self, log_dir: str) -> None:
-        self.log_files = [path for path in Path(log_dir).glob("**/*") if path.is_file()]
+        self.log_files = [
+            path for path in Path(log_dir).glob("**/*") if path.is_file()
+        ]
         self.scalars = self.get_scalars()
         self._logger = Logger()
 
@@ -41,7 +45,7 @@ class Board:
 
     def savefig(
         self,
-        output_dir: str,
+        output_dir: str = "outputs",
         xlim: Optional[Tuple] = None,
         ylim: Optional[Tuple] = None,
         extension: str = "png",
@@ -59,6 +63,7 @@ class Board:
                     plt.xlim(*xlim)
                 if ylim is not None:
                     plt.ylim(*ylim)
+
                 plt.savefig(f"{output_dir}/{file}_{tag}.{extension}")
                 plt.close()
 
