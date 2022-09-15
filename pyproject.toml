@@ -1,10 +1,11 @@
 [tool.black]
-line-length = 88
+line-length = 79
 target-version = ['py39']
 include = '\.py$'
 
 [tool.isort]
-profile = "black"
+include_trailing_comma = true
+multi_line_output = 3
 
 [tool.pydocstyle]
 ignore = "D100, D2, D3, D4"
