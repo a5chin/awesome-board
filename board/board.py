@@ -25,21 +25,20 @@ class Board:
         self.scalars = self.get_scalars()
         self._logger = Logger()
 
-    def get_scalars(self) -> Dict:
-        data = {log_file.parent.name: {} for log_file in self.log_files}
-
+    def get_scalars(self) -> Dict[str, Dict[str, int]]:
         for log_file in self.log_files:
             event = EventAccumulator(str(log_file))
             event.Reload()
 
             tags = event.Tags()["scalars"]
 
-            for tag in tags:
-                scalars = event.Scalars(tag)
-                data[log_file.parent.name][tag] = []
-
-                for scalar in scalars:
-                    data[log_file.parent.name][tag].append(scalar[Board.VALUE])
+        data = {
+            log_file.parent.name: {
+                tag: [scalar[Board.VALUE] for scalar in event.Scalars(tag)]
+                for tag in tags
+            }
+            for log_file in self.log_files
+        }
 
         return data
 
