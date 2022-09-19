@@ -20,7 +20,9 @@ class Board:
 
     def __init__(self, log_dir: str) -> None:
         self.log_files = [
-            path.as_posix() for path in Path(log_dir).glob("**/*") if path.is_file()
+            path.as_posix()
+            for path in Path(log_dir).glob("**/*")
+            if path.is_file()
         ]
         self.scalars = self.get_scalars()
         self._logger = Logger()
