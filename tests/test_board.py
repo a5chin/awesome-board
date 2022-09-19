@@ -6,7 +6,7 @@ import pytest
 from torch.utils.tensorboard import SummaryWriter
 
 current_dir = Path(__file__).resolve().parent
-sys.path.append(str(current_dir) + "/../")
+sys.path.append(current_dir.parent.as_posix())
 
 from board import Board
 

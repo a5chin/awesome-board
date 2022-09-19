@@ -26,21 +26,22 @@ class Board:
         self._logger = Logger()
 
     def get_scalars(self) -> Dict[str, Dict[str, int]]:
+        scalars = {}
+
         for log_file in self.log_files:
             event = EventAccumulator(str(log_file))
             event.Reload()
 
             tags = event.Tags()["scalars"]
 
-        data = {
-            log_file.parent.name: {
+            data = {
                 tag: [scalar[Board.VALUE] for scalar in event.Scalars(tag)]
                 for tag in tags
             }
-            for log_file in self.log_files
-        }
 
-        return data
+            scalars[log_file.parent.name] = data
+
+        return scalars
 
     def savefig(
         self,
@@ -66,4 +67,6 @@ class Board:
                 plt.savefig(f"{output_dir}/{file}_{tag}.{extension}")
                 plt.close()
 
-                self._logger.log(f"{file}/{tag} saved.")
+                self._logger.log(
+                    f"{output_dir}/{file}_{tag}.{extension} has been saved."
+                )
