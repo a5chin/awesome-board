@@ -4,7 +4,9 @@ from typing import Dict, Optional, Tuple
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
+from tensorboard.backend.event_processing.event_accumulator import (
+    EventAccumulator,
+)
 
 sns.set()
 
@@ -17,31 +19,35 @@ class Board:
     VALUE = 2
 
     def __init__(self, log_dir: str) -> None:
-        self.log_files = [path for path in Path(log_dir).glob("**/*") if path.is_file()]
+        self.log_files = [
+            path.as_posix()
+            for path in Path(log_dir).glob("**/*")
+            if path.is_file()
+        ]
         self.scalars = self.get_scalars()
         self._logger = Logger()
 
-    def get_scalars(self) -> Dict:
-        data = {log_file.parent.name: {} for log_file in self.log_files}
+    def get_scalars(self) -> Dict[str, Dict[str, int]]:
+        scalars = {}
 
         for log_file in self.log_files:
-            event = EventAccumulator(str(log_file))
+            event = EventAccumulator(log_file)
             event.Reload()
 
             tags = event.Tags()["scalars"]
 
-            for tag in tags:
-                scalars = event.Scalars(tag)
-                data[log_file.parent.name][tag] = []
+            data = {
+                tag: [scalar[Board.VALUE] for scalar in event.Scalars(tag)]
+                for tag in tags
+            }
 
-                for scalar in scalars:
-                    data[log_file.parent.name][tag].append(scalar[Board.VALUE])
+            scalars[Path(log_file).parent.name] = data
 
-        return data
+        return scalars
 
     def savefig(
         self,
-        output_dir: str,
+        output_dir: str = "outputs",
         xlim: Optional[Tuple] = None,
         ylim: Optional[Tuple] = None,
         extension: str = "png",
@@ -59,7 +65,10 @@ class Board:
                     plt.xlim(*xlim)
                 if ylim is not None:
                     plt.ylim(*ylim)
+
                 plt.savefig(f"{output_dir}/{file}_{tag}.{extension}")
                 plt.close()
 
-                self._logger.log(f"{file}/{tag} saved.")
+                self._logger.log(
+                    f"{output_dir}/{file}_{tag}.{extension} has been saved."
+                )
